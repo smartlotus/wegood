@@ -43,11 +43,11 @@
     {
       "id": "D",
       "name": "发布 GitHub 仓库（含全部文件功能说明）",
-      "status": "RUNNING",
+      "status": "PASS",
       "run_id": "2026-09-08_publish_002",
       "run_dir": null,
-      "gate_report": "首次发布 PASS（2026-09-07_publish_001）；本轮为 v1.1.0 增量推送",
-      "attempts": 1,
+      "gate_report": "git ls-remote origin/main == local HEAD (372b645)，仓库 https://github.com/smartlotus/wegood",
+      "attempts": 2,
       "last_error": null,
       "depends_on": ["C"]
     }
