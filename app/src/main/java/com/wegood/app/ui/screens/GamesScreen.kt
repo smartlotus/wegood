@@ -1,5 +1,6 @@
 package com.wegood.app.ui.screens
 
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -22,6 +23,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -137,14 +140,7 @@ fun TicTacToeScreen(state: com.wegood.app.data.MeResponse) {
                                 contentAlignment = Alignment.Center,
                             ) {
                                 val mark = ttt.board.getOrNull(idx)
-                                Text(
-                                    when (mark) {
-                                        "X" -> "❌"
-                                        "O" -> "⭕️"
-                                        else -> ""
-                                    },
-                                    fontSize = 34.sp,
-                                )
+                                AnimatedMark(mark)
                             }
                         }
                     }
@@ -171,6 +167,30 @@ fun TicTacToeScreen(state: com.wegood.app.data.MeResponse) {
 
 private fun com.wegood.app.data.MeResponse.allNames(): Map<String, String> =
     mapOf(device.id to device.name) + (partner?.let { mapOf(it.id to it.name) } ?: emptyMap())
+
+/** 落子缩放入场动画 */
+@Composable
+private fun AnimatedMark(mark: String?) {
+    var shown by remember { mutableStateOf<String?>(null) }
+    val appear = remember { androidx.compose.animation.core.Animatable(0f) }
+    LaunchedEffect(mark) {
+        if (mark != null) {
+            shown = mark
+            appear.snapTo(0f)
+            appear.animateTo(1f, spring(dampingRatio = 0.45f, stiffness = 500f))
+        }
+    }
+    Box(Modifier.scale(appear.value)) {
+        Text(
+            when (shown) {
+                "X" -> "❌"
+                "O" -> "⭕️"
+                else -> ""
+            },
+            fontSize = 34.sp,
+        )
+    }
+}
 
 /** 每日一问：双方各答一题，互相可见 */
 @Composable

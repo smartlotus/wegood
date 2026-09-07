@@ -11,3 +11,4 @@
 2026-09-07 23:40 | release 用 debug 密钥签名 | 个人分发免配签名，APK 可直接安装 | app/build.gradle.kts
 2026-09-07 23:45 | 新增三个可互动桌面小组件 | 用户新需求 | widget/Widgets.kt
 2026-09-08 00:05 | repo 结构对齐 pipeline-ops（.agents/ + pipeline_state.json + runs/） | 用户要求自动 Agent 架构 | pipeline_state.json
+2026-09-08 01:10 | v1.1.0 动效/UI/小组件优化：数字滚动、迷你爱心爆发、光环扩散、弹跳交互、卡片投影、送达反馈、今天徽章、预览图 | 用户要求针对动效/UI/小组件实际优化 | runs/2026-09-08_ui-polish_001/

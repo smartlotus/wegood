@@ -50,6 +50,10 @@ object Prefs {
     var lastFeedTs: Long get() = sp.getLong("lastFeedTs", 0L)
         set(v) = sp.edit().putLong("lastFeedTs", v).apply()
 
+    /** 最近一次发送互动的时间戳（小组件"已送达"反馈用） */
+    var lastSentTs: Long get() = sp.getLong("lastSentTs", 0L)
+        set(v) = sp.edit().putLong("lastSentTs", v).apply()
+
     /** 实时守护（前台服务保持 SSE 长连接） */
     var realtimeEnabled: Boolean get() = sp.getBoolean("realtime", true)
         set(v) = sp.edit().putBoolean("realtime", v).apply()

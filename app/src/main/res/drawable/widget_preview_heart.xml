@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 一键爱心小组件预览：白卡粉边 + 粉心 -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/widget_bg_card" />
+    <item android:drawable="@drawable/ic_stat_heart" android:gravity="center" />
+</layer-list>

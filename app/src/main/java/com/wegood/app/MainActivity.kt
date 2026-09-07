@@ -12,7 +12,15 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -36,10 +44,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
@@ -116,9 +126,7 @@ private fun AppRoot() {
     }
 
     when {
-        state == null -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator(color = Pink)
-        }
+        state == null -> LoadingScreen()
         state!!.partner == null -> PairScreen()
         else -> MainTabs(state = state!!)
     }
@@ -160,7 +168,16 @@ private fun MainTabs(state: com.wegood.app.data.MeResponse) {
                                 restoreState = true
                             }
                         },
-                        icon = { Icon(tab.icon, contentDescription = tab.label, tint = if (currentRoute == tab.route) Pink else Color(0xFFB0B0B6)) },
+                        icon = {
+                            val iconScale by animateFloatAsState(
+                                if (currentRoute == tab.route) 1.18f else 1f,
+                                spring(dampingRatio = 0.5f),
+                                label = "tabScale",
+                            )
+                            Box(Modifier.scale(iconScale)) {
+                                Icon(tab.icon, contentDescription = tab.label, tint = if (currentRoute == tab.route) Pink else Color(0xFFB0B0B6))
+                            }
+                        },
                         label = { Text(tab.label, color = if (currentRoute == tab.route) Pink else Color(0xFF8E8E93)) },
                     )
                 }
@@ -190,6 +207,25 @@ private fun DetailPage(title: String, onBack: () -> Unit, content: @Composable (
             androidx.compose.material3.TextButton(onClick = onBack) { Text("‹ 返回", color = Color(0xFF8E8E93)) }
         }
         Box(Modifier.weight(1f)) { content() }
+    }
+}
+
+/** 心跳脉冲加载页 */
+@Composable
+private fun LoadingScreen() {
+    val transition = rememberInfiniteTransition(label = "heartbeat")
+    val beat by transition.animateFloat(
+        initialValue = 0.86f, targetValue = 1.1f,
+        animationSpec = infiniteRepeatable(tween(420), RepeatMode.Reverse),
+        label = "beat",
+    )
+    Column(
+        Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center,
+    ) {
+        Text("💗", fontSize = 56.sp, modifier = Modifier.scale(beat))
+        Text("正在连接你们的心动…", color = Color(0xFF8E8E93), fontSize = 14.sp, modifier = Modifier.padding(top = 14.dp))
     }
 }
 

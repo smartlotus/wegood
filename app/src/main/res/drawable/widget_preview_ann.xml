@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 纪念日小组件预览：橙渐变圆角 + 双爱心 -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/widget_bg_orange" />
+    <item android:drawable="@drawable/widget_heart_white" android:gravity="center" />
+</layer-list>

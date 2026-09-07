@@ -6,6 +6,6 @@
     android:targetCellHeight="2"
     android:updatePeriodMillis="1800000"
     android:initialLayout="@layout/widget_love_card"
-    android:previewImage="@drawable/widget_bg_pink"
+    android:previewImage="@drawable/widget_preview_love"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen" />

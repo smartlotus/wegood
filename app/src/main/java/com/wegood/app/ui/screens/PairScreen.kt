@@ -3,6 +3,11 @@ package com.wegood.app.ui.screens
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -39,6 +44,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -82,9 +88,16 @@ fun PairScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(Modifier.height(72.dp))
+        val logoPulse = rememberInfiniteTransition(label = "logo")
+        val logoScale by logoPulse.animateFloat(
+            initialValue = 0.96f, targetValue = 1.05f,
+            animationSpec = infiniteRepeatable(tween(900), RepeatMode.Reverse),
+            label = "logoScale",
+        )
         Box(
             Modifier
                 .size(84.dp)
+                .scale(logoScale)
                 .clip(CircleShape)
                 .background(PinkGradient),
             contentAlignment = Alignment.Center,

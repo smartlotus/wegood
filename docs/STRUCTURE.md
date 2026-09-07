@@ -40,6 +40,7 @@
 | `res/mipmap-anydpi-v26/ic_launcher*.xml` | 自适应图标组装（暖白底 + 前景 + 单色层） |
 | `res/drawable/ic_stat_heart.xml` | 系统通知小图标（白色爱心） |
 | `res/drawable/widget_bg_pink/orange/card.xml`、`widget_btn_circle.xml`、`widget_dot_*.xml` | 小组件背景（粉/橙渐变圆角、白卡描边）、半透明互动按钮、在线状态点 |
+| `res/drawable/widget_heart_white.xml`、`widget_preview_*.xml` | 小组件选择器预览图（渐变底 + 爱心 layer-list） |
 | `res/layout/widget_love_card.xml` | 情侣卡小组件布局：在一起天数 + 在线点 + ❤️😘🤗 三个直发按钮 + 最近动态行 |
 | `res/layout/widget_heart_button.xml` | 一键爱心小组件布局：大爱心 + "点一下，想你了" + 今日计数 |
 | `res/layout/widget_anniversary.xml` | 纪念日小组件布局：名称 + 大数字天数 + 日期 |
@@ -51,9 +52,9 @@
 | 文件 | 功能 |
 |---|---|
 | `WeGoodApp.kt` | Application：初始化 Prefs、创建通知渠道、启动 Repo |
-| `MainActivity.kt` | 单 Activity 入口：导航（底部 4 Tab + 游戏详情页）、通知权限申请、前台标记、UI 事件收集、爱心全屏特效挂载、震动 |
+| `MainActivity.kt` | 单 Activity 入口：导航（底部 4 Tab + 游戏详情页）、通知权限申请、前台标记、UI 事件收集、爱心全屏特效挂载、震动；v1.1.0：底栏图标选中弹跳、💗 心跳脉冲加载页 |
 | `data/Models.kt` | 全部数据模型（与后端 JSON 对齐）+ SSE 事件 + 表情映射 |
-| `data/Prefs.kt` | SharedPreferences：设备凭证、配对快照（小组件/开机重排提醒离线可用）、今日爱心计数、实时守护开关 |
+| `data/Prefs.kt` | SharedPreferences：设备凭证、配对快照（小组件/开机重排提醒离线可用）、今日爱心计数、最近发送时间戳（小组件"已送达"反馈）、实时守护开关 |
 | `data/DateMath.kt` | 客户端日期纯函数（与 server/dates.js 同语义）：天数、周年滚动、提醒触发时刻；含 `Calendar` 清零陷阱注释 |
 | `data/Api.kt` | OkHttp REST 客户端（kotlinx.serialization），设备头鉴权，SSE 专用无超时 client |
 | `data/Repo.kt` | **中央仓库**：状态流 + SSE 长连接（断线 3s 重连）+ 全部操作（配对/爱心/纪念日/游戏）+ 状态变化分发（小组件刷新/提醒重排/漏发爱心补偿） |
@@ -61,14 +62,14 @@
 | `notify/Reminders.kt` | ReminderScheduler（AlarmManager 精确闹钟，S+ 降级 setWindow）+ ReminderReceiver（触发通知+按年续排）+ BootReceiver（开机重排+小组件刷新） |
 | `notify/SseService.kt` | 实时守护前台服务：后台保持 SSE，收到爱心/提醒即刻系统通知 |
 | `work/SyncWorker.kt` | WorkManager 15 分钟兜底轮询：App 被杀/守护关闭时补拉漏掉的互动并通知 |
-| `widget/Widgets.kt` | **三个小组件 Provider**（情侣卡/一键爱心/纪念日）+ WidgetsUpdater（状态变化统一刷新）+ WidgetActionReceiver（**小组件上直接发送互动**） |
+| `widget/Widgets.kt` | **三个小组件 Provider**（情侣卡/一键爱心/纪念日）+ WidgetsUpdater（状态变化统一刷新）+ WidgetActionReceiver（**小组件上直接发送互动**）；v1.1.0：发送后 60s「已送达 ✓」反馈、纪念日当天「就是今天 🎉」徽章、动态 💬 前缀 |
 | `ui/theme/Theme.kt` | iOS 系统色板 + Material3 主题（粉 #FF2D55 主色、分组灰底） |
-| `ui/components/Components.kt` | 健康风组件库：LargeTitle、SectionHeader、MetricCard（彩色渐变指标卡）、ListCard、OnlineDot、ReactionRow、无涟漪点击扩展 |
-| `ui/HeartBurst.kt` | 收到爱心的全屏特效：脉动大爱心 + 14 颗随机心形粒子升腾 + 自动关闭 |
-| `ui/screens/PairScreen.kt` | 配对页：我的配对码大字展示/复制、输入对方码绑定、服务器地址设置 |
-| `ui/screens/HomeScreen.kt` | 首页（健康「摘要」风）：在一起英雄卡、发送爱心大按钮、表情快捷条、最近互动流 |
+| `ui/components/Components.kt` | 健康风组件库：LargeTitle、SectionHeader、MetricCard（彩色渐变指标卡+柔和投影）、ListCard（彩色图标圆片+右箭头）、OnlineDot、ReactionRow（点按弹跳）、无涟漪点击扩展 |
+| `ui/HeartBurst.kt` | 收到爱心的全屏特效：中心光环扩散 + 大爱心弹簧入场叠加脉动 + 14 颗随机心形粒子升腾 + 自动关闭 |
+| `ui/screens/PairScreen.kt` | 配对页：我的配对码大字展示/复制、输入对方码绑定、服务器地址设置；logo 呼吸动画 |
+| `ui/screens/HomeScreen.kt` | 首页（健康「摘要」风）：在一起英雄卡（天数 0→N 滚动动画）、发送爱心大按钮（弹簧缩放+迷你爱心粒子爆发）、分时段问候语、表情快捷条（点按弹跳）、最近互动流 |
 | `ui/screens/AnniversaryScreen.kt` | 纪念日列表（橙色渐变卡：还有/已经 N 天）+ FAB + 底部抽屉编辑器（名称/日期选择器/每年重复/提前提醒档位/时刻） |
-| `ui/screens/GamesScreen.kt` | 游戏大厅 + 三个游戏：双人井字棋（实时同步/胜负/再来一局）、每日一问（互看规则）、真心话大冒险（内置题库） |
+| `ui/screens/GamesScreen.kt` | 游戏大厅 + 三个游戏：双人井字棋（实时同步/胜负/落子缩放入场/再来一局）、每日一问（互看规则）、真心话大冒险（内置题库） |
 | `ui/screens/MeScreen.kt` | 我的：昵称/配对码、TA 的在线状态卡、通知与精确闹钟权限引导、实时守护开关、服务器地址、重排提醒、解绑确认 |
 | `app/src/test/.../DateMathTest.kt` | **环节 B 验收门**：日期纯函数 JUnit（当天即第 1 天、周年滚动、提醒触发时刻、相对时间） |
 

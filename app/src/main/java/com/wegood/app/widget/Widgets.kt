@@ -105,8 +105,12 @@ class LoveCardWidget : AppWidgetProvider() {
                 },
             )
             v.setViewVisibility(R.id.widget_online_dot, if (Prefs.partnerOnline) View.VISIBLE else View.GONE)
-            val latest = if (Prefs.latestFeedText.isBlank()) "绑定律动的心，开始你们的互动吧 ❤️"
-            else "${Prefs.latestFeedText} · ${DateMath.relTime(Prefs.latestFeedTs)}"
+            val justSent = System.currentTimeMillis() - Prefs.lastSentTs < 60_000
+            val latest = when {
+                justSent -> "💌 刚刚送达给 ${Prefs.partnerName.ifBlank { "TA" }} ✓"
+                Prefs.latestFeedText.isBlank() -> "绑定律动的心，开始你们的互动吧 ❤️"
+                else -> "💬 ${Prefs.latestFeedText} · ${DateMath.relTime(Prefs.latestFeedTs)}"
+            }
             v.setTextViewText(R.id.widget_latest, latest)
 
             v.setOnClickPendingIntent(R.id.widget_left, WidgetsUpdater.openAppIntent(context))
@@ -131,7 +135,11 @@ class HeartButtonWidget : AppWidgetProvider() {
 
         private fun render(context: Context): RemoteViews {
             val v = RemoteViews(context.packageName, R.layout.widget_heart_button)
-            v.setTextViewText(R.id.widget_heart_count, "今日已发 ${Prefs.todaySentCount} 颗")
+            val justSent = System.currentTimeMillis() - Prefs.lastSentTs < 60_000
+            v.setTextViewText(
+                R.id.widget_heart_count,
+                if (justSent) "已送达 ${Prefs.partnerName.ifBlank { "TA" }} ✓" else "今日已发 ${Prefs.todaySentCount} 颗",
+            )
             v.setOnClickPendingIntent(R.id.widget_heart_root, WidgetsUpdater.sendAction(context, "heart"))
             return v
         }
@@ -165,7 +173,14 @@ class AnniversaryWidget : AppWidgetProvider() {
                 val picked = future ?: anns
                     .map { it to DateMath.daysSince(it.date) }
                     .minByOrNull { it.second }!!
-                v.setTextViewText(R.id.widget_ann_label, if (future != null) "纪念日 · 距离" else "纪念日 · 已经")
+                v.setTextViewText(
+                    R.id.widget_ann_label,
+                    when {
+                        future != null && picked.second == 0 -> "纪念日 · 就是今天 🎉"
+                        future != null -> "纪念日 · 距离"
+                        else -> "纪念日 · 已经"
+                    },
+                )
                 v.setTextViewText(R.id.widget_ann_name, picked.first.name)
                 v.setTextViewText(R.id.widget_ann_num, "${picked.second}")
                 v.setTextViewText(R.id.widget_ann_unit, " 天")

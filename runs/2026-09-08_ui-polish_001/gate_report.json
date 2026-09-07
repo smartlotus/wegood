@@ -1,0 +1,20 @@
+{
+  "run_id": "2026-09-08_ui-polish_001",
+  "stage": "B+C",
+  "verdict": "PASS",
+  "checked_at": "2026-09-08T01:15:00+08:00",
+  "attempts": [
+    {"n": 1, "result": "FAIL", "cause": "缺 import：spring（HeartBurst）/ animateFloat（PairScreen）"},
+    {"n": 2, "result": "PASS", "note": "BUILD SUCCESSFUL in 44s"}
+  ],
+  "checks": [
+    {"name": "gradle assembleDebug", "result": "PASS", "evidence": "app/build/outputs/apk/debug/app-debug.apk (11,023,562 bytes)"},
+    {"name": "testDebugUnitTest", "result": "PASS", "evidence": "tests=7 failures=0 errors=0（2026-09-07T17:13:20Z 新时间戳）"},
+    {"name": "gradle assembleRelease", "result": "PASS", "evidence": "app/build/outputs/apk/release/app-release.apk (7,711,962 bytes)"},
+    {"name": "release APK 可安装（已签名）", "result": "PASS", "evidence": "apksigner verify OK（debug 密钥，策略见 DECISIONS）"}
+  ],
+  "limitations": [
+    "动效为 Compose 实现并通过编译/单测门，未做真机人工走查（本环境无连接设备）",
+    "RemoteViews 限制：小组件自身无法做逐帧动画，优化聚焦状态反馈与预览质量"
+  ]
+}

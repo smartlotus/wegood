@@ -1,5 +1,7 @@
 package com.wegood.app.ui.components
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -16,10 +18,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -85,6 +93,7 @@ fun MetricCard(
         modifier = modifier
             .fillMaxWidth()
             .height(height)
+            .shadow(6.dp, RoundedCornerShape(20.dp), spotColor = Color.Black.copy(alpha = 0.16f), ambientColor = Color.Black.copy(alpha = 0.05f))
             .clip(RoundedCornerShape(20.dp))
             .background(brush)
             .clickable(enabled = onClick != null, interactionSource = remember { MutableInteractionSource() }, indication = null) { onClick?.invoke() }
@@ -132,6 +141,7 @@ fun ListCard(
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .shadow(3.dp, RoundedCornerShape(16.dp), spotColor = Color.Black.copy(alpha = 0.10f), ambientColor = Color.Black.copy(alpha = 0.04f))
             .clip(RoundedCornerShape(16.dp))
             .background(Color.White)
             .clickable(enabled = onClick != null, interactionSource = remember { MutableInteractionSource() }, indication = null) { onClick?.invoke() }
@@ -154,6 +164,9 @@ fun ListCard(
         if (value != null) {
             Text(value, fontSize = 14.sp, color = TextGray)
         }
+        if (onClick != null) {
+            Text("›", fontSize = 20.sp, color = Color(0xFFC7C7CC), modifier = Modifier.padding(start = 4.dp))
+        }
     }
 }
 
@@ -168,7 +181,7 @@ fun OnlineDot(online: Boolean, modifier: Modifier = Modifier) {
     )
 }
 
-/** 互动表情快捷条 */
+/** 互动表情快捷条（点按弹跳动效） */
 @Composable
 fun ReactionRow(kinds: List<Pair<String, String>>, onSend: (String) -> Unit, modifier: Modifier = Modifier) {
     Row(
@@ -176,15 +189,23 @@ fun ReactionRow(kinds: List<Pair<String, String>>, onSend: (String) -> Unit, mod
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         kinds.forEach { (kind, emoji) ->
+            var bump by remember { mutableStateOf(false) }
+            val scale by animateFloatAsState(
+                targetValue = if (bump) 0.78f else 1f,
+                animationSpec = spring(stiffness = 900f),
+                label = "bump",
+            )
+            LaunchedEffect(bump) { if (bump) { kotlinx.coroutines.delay(130); bump = false } }
             Box(
                 Modifier
                     .weight(1f)
+                    .shadow(3.dp, RoundedCornerShape(14.dp), spotColor = Color.Black.copy(alpha = 0.10f), ambientColor = Color.Black.copy(alpha = 0.04f))
                     .clip(RoundedCornerShape(14.dp))
                     .background(Color.White)
-                    .clickable { onSend(kind) }
+                    .clickableNoIndication { bump = true; onSend(kind) }
                     .padding(vertical = 10.dp),
                 contentAlignment = Alignment.Center,
-            ) { Text(emoji, fontSize = 22.sp) }
+            ) { Text(emoji, fontSize = 22.sp, modifier = Modifier.scale(scale)) }
         }
     }
 }

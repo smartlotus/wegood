@@ -212,6 +212,7 @@ object Repo {
     suspend fun sendHeart(kind: String, silentError: Boolean = false): Result<Unit> = runCatching {
         Api.sendHeart(kind)
         Prefs.todaySentCount = Prefs.todaySentCount + 1
+        Prefs.lastSentTs = System.currentTimeMillis()
         appendLocalFeed(FeedEvent(id = "mine-${System.currentTimeMillis()}", ts = System.currentTimeMillis(), kind = "heart", heartKind = kind, fromName = Prefs.myName))
         WidgetsUpdater.updateAll(appContext)
     }.onFailure {
