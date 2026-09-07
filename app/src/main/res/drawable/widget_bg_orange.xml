@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 纪念日小组件背景：橙色渐变圆角 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <gradient android:startColor="#FFFFB340" android:endColor="#FFFF9500" android:angle="45" />
+    <corners android:radius="22dp" />
+</shape>

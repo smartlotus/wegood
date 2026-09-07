@@ -1,0 +1,26 @@
+# ===== pipeline-ops 推荐 .gitignore（大体积/可再生/第三方资产不入库） =====
+# 环境与缓存（数 GB，可重建）
+envs/
+cache/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+# 原始数据集与预训练模型（版权 + 体积）
+data/
+models/
+datasets/
+# 训练产物中的重资产（报告/CSV/日志等小文件仍建议入库）
+**/checkpoints*/
+**/final_model/
+*.safetensors
+*.ckpt
+*.pth
+*.pt
+*.bin
+*.mp4
+*.npz
+# 系统杂物
+Thumbs.db
+Desktop.ini

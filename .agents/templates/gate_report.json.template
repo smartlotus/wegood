@@ -1,0 +1,26 @@
+{
+  "gate": "<环节>_gate",
+  "checked_at": "",
+  "checked_by": "",
+  "verdict": "PASS",
+  "verdict_enum": "PASS | FAIL | PASS_WITH_LIMITATIONS",
+  "metrics": {
+    "_comment": "实测指标，如 success_rate / valid_ratio / median_distance",
+    "example_metric": 0.0
+  },
+  "thresholds": {
+    "_comment": "预写的验收门槛，事后不许挪",
+    "example_metric": 0.7
+  },
+  "evidence": [
+    "<绝对路径：报告/日志/图/CSV>"
+  ],
+  "inputs_verified": {
+    "run_id": "<所消费的上游 run_id>",
+    "manifest_matches": true
+  },
+  "limitations": [
+    "_comment：PASS_WITH_LIMITATIONS 时必填，如实记录已知缺陷"
+  ],
+  "notes": ""
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 情侣卡背景：粉红渐变圆角 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <gradient android:startColor="#FFFF6482" android:endColor="#FFFF2D55" android:angle="45" />
+    <corners android:radius="22dp" />
+</shape>

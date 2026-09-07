@@ -1,0 +1,16 @@
+{
+  "run_id": "2026-09-07_android-build_001",
+  "stage": "B+C",
+  "verdict": "PASS",
+  "checked_at": "2026-09-08T00:38:00+08:00",
+  "checks": [
+    {"name": "gradle assembleDebug", "result": "PASS", "evidence": "BUILD SUCCESSFUL；app/build/outputs/apk/debug/app-debug.apk (11,080,666 bytes)"},
+    {"name": "testDebugUnitTest", "result": "PASS", "evidence": "tests=7 failures=0 errors=0（app/build/test-results/testDebugUnitTest）"},
+    {"name": "gradle assembleRelease", "result": "PASS", "evidence": "app/build/outputs/apk/release/app-release.apk (7,710,161 bytes)"},
+    {"name": "release APK 可安装（已签名）", "result": "PASS", "evidence": "apksigner verify：CN=Android Debug, SHA-256=220bb1cf..."}
+  ],
+  "limitations": [
+    "签名使用 debug 密钥（个人分发策略，见 DECISIONS）；上架需替换正式签名",
+    "UI 未做真机人工验收（本环境无设备），仅编译+单测门"
+  ]
+}

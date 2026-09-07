@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 情侣卡小组件（4x2）：左侧在一起天数+在线状态 / 右侧快捷互动按钮 / 底部最近动态 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/widget_bg_pink"
+    android:paddingStart="16dp" android:paddingEnd="16dp"
+    android:paddingTop="12dp" android:paddingBottom="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:orientation="horizontal">
+
+        <!-- 左：在一起天数（点击打开 App） -->
+        <LinearLayout
+            android:id="@+id/widget_left"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:orientation="vertical"
+            android:gravity="center_vertical">
+            <TextView android:id="@+id/widget_days_label"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="在一起"
+                android:textColor="#CCFFFFFF" android:textSize="12sp" />
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="bottom">
+                <TextView android:id="@+id/widget_days_num"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="0" android:textColor="#FFFFFFFF" android:textSize="32sp"
+                    android:textStyle="bold" android:includeFontPadding="false" />
+                <TextView
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text=" 天" android:textColor="#E6FFFFFF" android:textSize="14sp"
+                    android:paddingBottom="2dp" />
+            </LinearLayout>
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical">
+                <View android:id="@+id/widget_online_dot"
+                    android:layout_width="7dp" android:layout_height="7dp"
+                    android:background="@drawable/widget_dot_green" />
+                <TextView android:id="@+id/widget_partner"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp" android:text="TA 在线"
+                    android:textColor="#E6FFFFFF" android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 右：三个快捷互动按钮 -->
+        <LinearLayout
+            android:layout_width="wrap_content" android:layout_height="match_parent"
+            android:orientation="horizontal" android:gravity="center">
+            <TextView android:id="@+id/widget_btn_heart"
+                android:layout_width="40dp" android:layout_height="40dp"
+                android:background="@drawable/widget_btn_circle"
+                android:gravity="center" android:text="❤️" android:textSize="19sp" />
+            <TextView android:id="@+id/widget_btn_kiss"
+                android:layout_width="40dp" android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/widget_btn_circle"
+                android:gravity="center" android:text="😘" android:textSize="19sp" />
+            <TextView android:id="@+id/widget_btn_hug"
+                android:layout_width="40dp" android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/widget_btn_circle"
+                android:gravity="center" android:text="🤗" android:textSize="19sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 底部：最近一条互动 -->
+    <TextView android:id="@+id/widget_latest"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="绑定律动的心，开始你们的互动吧 ❤️"
+        android:textColor="#B3FFFFFF" android:textSize="11sp"
+        android:maxLines="1" android:ellipsize="end" android:layout_marginTop="4dp" />
+</LinearLayout>

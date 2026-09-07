@@ -1,0 +1,30 @@
+{
+  "run_id": "<YYYYMMDD_HHMM>_<环节>_<序号>",
+  "stage": "",
+  "created_at": "",
+  "created_by": "",
+  "status": "RUNNING",
+  "code_version": {
+    "git_commit": "",
+    "dirty_files": []
+  },
+  "inputs": {
+    "<输入名，如 upstream_dataset>": {
+      "run_id": "<上游 run_id，凭验收票指认；禁止扫描目录>",
+      "path": "",
+      "sha256": null
+    }
+  },
+  "params": {
+    "_comment": "本次运行的全部关键参数，resume 时用于指纹比对"
+  },
+  "semantic_counters": {
+    "_comment": "所有影响续跑语义的计数器快照（准则 5）"
+  },
+  "env": {
+    "python": "",
+    "key_packages": {}
+  },
+  "gate_report": null,
+  "verdict": null
+}

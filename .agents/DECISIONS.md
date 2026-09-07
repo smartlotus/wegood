@@ -1,0 +1,13 @@
+# 决策流水（append-only，不改写历史行）
+
+格式：`日期时间 | 决策 | 理由 | 证据/链接`
+
+---
+2026-09-07 23:20 | 客户端从 PWA 切换为 Android 原生（Kotlin + Compose + Material3） | 用户指定基于 Android Studio 开发 | docs/superpowers/specs/2026-09-07-wegood-couple-app-design.md
+2026-09-07 23:20 | UI 对齐 iOS「健康」App：分组灰底 + 高饱和彩色圆角卡 + 大标题 | 用户指定风格 | docs/design/ui-preview.html
+2026-09-07 23:25 | AGP 8.13.2 + Gradle 8.13 + Kotlin 2.1.0 + Compose 1.7.6 | 本机 Gradle 缓存全命中，编译近零下载 | ~/.gradle/caches
+2026-09-07 23:25 | 实时通道自建 SSE（前台守护 + WorkManager 15 分钟兜底），不用 FCM | 国内不可依赖 Google 服务 | server/index.js, SseService.kt
+2026-09-07 23:26 | 纪念日提醒 = 本地 AlarmManager + 服务端 tick 双保险 | App 被杀/离线仍可靠，去重防双响 | Reminders.kt, server tick
+2026-09-07 23:40 | release 用 debug 密钥签名 | 个人分发免配签名，APK 可直接安装 | app/build.gradle.kts
+2026-09-07 23:45 | 新增三个可互动桌面小组件 | 用户新需求 | widget/Widgets.kt
+2026-09-08 00:05 | repo 结构对齐 pipeline-ops（.agents/ + pipeline_state.json + runs/） | 用户要求自动 Agent 架构 | pipeline_state.json

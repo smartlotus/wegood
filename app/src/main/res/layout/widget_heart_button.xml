@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 一键爱心小组件（2x2）：点击直接给 TA 发一颗爱心，无需打开 App -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_heart_root"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/widget_bg_card"
+    android:gravity="center">
+
+    <TextView android:id="@+id/widget_heart_emoji"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="❤️" android:textSize="40sp" />
+
+    <TextView
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginTop="6dp" android:text="点一下，想你了"
+        android:textColor="#FFFF2D55" android:textSize="13sp" android:textStyle="bold" />
+
+    <TextView android:id="@+id/widget_heart_count"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginTop="2dp" android:text="今日已发 0 颗"
+        android:textColor="#FF8E8E93" android:textSize="11sp" />
+</LinearLayout>

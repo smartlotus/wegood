@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "project": "<项目名>",
+  "updated_at": "",
+  "updated_by": "",
+  "paused": false,
+  "active_owner": null,
+  "owner_note": "active_owner+start_time 标记当前重型任务持有者；重资源任务（GPU训练/评估）全局串行",
+  "stages": [
+    {
+      "id": "A",
+      "name": "<环节名，如 数据采集>",
+      "status": "PENDING",
+      "status_enum": "PENDING | RUNNING | PASS | PASS_WITH_LIMITATIONS | FAIL | BLOCKED | dirty",
+      "run_id": null,
+      "run_dir": null,
+      "gate_report": null,
+      "attempts": 0,
+      "last_error": null,
+      "depends_on": []
+    },
+    {
+      "id": "B",
+      "name": "<环节名>",
+      "status": "PENDING",
+      "run_id": null,
+      "run_dir": null,
+      "gate_report": null,
+      "attempts": 0,
+      "last_error": null,
+      "depends_on": ["A"]
+    }
+  ],
+  "notes": "写权限：仅编排器（读-改-写，原子替换）。其他进程/Agent 只读。"
+}

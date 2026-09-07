@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WeGood UI 设计预览 · iOS 健康风格</title>
+<style>
+  :root{
+    --pink:#FF2D55; --pink-l:#FF6482; --orange:#FF9500; --indigo:#5E5CE6;
+    --purple:#AF52DE; --teal:#30B0C7; --yellow:#FF9F0A; --green:#30D158;
+    --bg:#F2F2F7; --gray:#8E8E93; --card:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+  body{background:#E2E2EA;padding:28px 16px;color:#000}
+  h1{font-size:26px;font-weight:800;margin-bottom:4px}
+  .sub{color:var(--gray);font-size:13px;margin-bottom:22px}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .phone{width:375px;background:var(--bg);border-radius:44px;border:10px solid #1c1c1e;overflow:hidden;flex:none}
+  .screen{height:760px;overflow-y:auto;padding-bottom:20px}
+  .screen::-webkit-scrollbar{display:none}
+  .bigtitle{font-size:34px;font-weight:800;padding:18px 20px 4px}
+  .date{color:var(--gray);font-size:13px;padding:0 20px 8px}
+  .hero{margin:6px 20px 12px;border-radius:20px;padding:16px;color:#fff;background:linear-gradient(135deg,var(--pink-l),var(--pink))}
+  .hero .top{display:flex;justify-content:space-between;align-items:center}
+  .hero .ic{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:15px}
+  .hero .num{font-size:40px;font-weight:800;line-height:1.1}
+  .hero .cap{opacity:.85;font-size:13px}
+  .send{margin:0 20px 12px;background:rgba(255,45,85,.1);border-radius:20px;text-align:center;padding:22px}
+  .send .h{font-size:46px;display:inline-block}
+  .send .t{color:var(--pink);font-weight:600;font-size:14px;margin-top:8px}
+  .react{display:flex;gap:10px;padding:0 20px 4px}
+  .react div{flex:1;background:#fff;border-radius:14px;text-align:center;padding:10px 0;font-size:22px}
+  .sec{display:flex;justify-content:space-between;padding:14px 20px 8px;font-size:20px;font-weight:700}
+  .lc{background:#fff;border-radius:16px;margin:0 20px 10px;padding:12px 14px;display:flex;align-items:center;gap:12px}
+  .lc .chip{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;flex:none}
+  .lc .tt{font-size:16px;font-weight:600}
+  .lc .st{font-size:13px;color:var(--gray);margin-top:2px}
+  .lc .vv{margin-left:auto;color:var(--gray);font-size:14px}
+  .fab{position:absolute;right:24px;bottom:90px;width:56px;height:56px;border-radius:50%;background:var(--orange);color:#fff;font-size:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(255,149,0,.4)}
+  .phone{position:relative}
+  .tabbar{display:flex;background:#fff;border-top:1px solid #ececf1;padding:8px 0 22px}
+  .tab{flex:1;text-align:center;font-size:11px;color:#B0B0B6}
+  .tab.on{color:var(--pink)}
+  .tab .i{font-size:22px;display:block}
+  .note{font-size:12px;color:var(--gray);padding:8px 20px}
+  .widget{width:360px;border-radius:22px;padding:14px 16px;color:#fff;margin-bottom:16px;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+  .widget .wtitle{font-size:12px;opacity:.8}
+  .widget .wnum{font-size:32px;font-weight:800}
+  .wlove{background:linear-gradient(135deg,var(--pink-l),var(--pink))}
+  .wann{background:linear-gradient(135deg,#FFB340,var(--orange))}
+  .wbtns{display:flex;gap:8px}
+  .wbtns div{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:19px}
+  .wgrid{display:flex;gap:22px;flex-wrap:wrap}
+  .pal{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .pal div{width:64px;height:64px;border-radius:14px;color:#fff;font-size:10px;display:flex;align-items:flex-end;padding:6px}
+  h2{font-size:18px;font-weight:800;margin:26px 0 4px}
+</style>
+</head>
+<body>
+<h1>WeGood 情侣互动 App · UI / 图标设计预览</h1>
+<div class="sub">设计语言：模仿 iOS「健康」App —— 浅灰分组背景 · 高饱和度彩色圆角卡片 · 大标题 · 白色列表卡 · 底部 Tab（实现为 Jetpack Compose，本页为静态示意）</div>
+
+<div class="row">
+  <!-- 首页 -->
+  <div class="phone"><div class="screen">
+    <div class="bigtitle">WeGood</div><div class="date">9月7日 星期一</div>
+    <div class="hero">
+      <div class="top"><div class="ic">💞</div><div style="font-size:14px;font-weight:600">在一起</div></div>
+      <div class="num">366<span style="font-size:15px;font-weight:600"> 天</span></div>
+      <div class="cap">每一天都值得纪念 · 和 小柚</div>
+    </div>
+    <div class="send"><span class="h">❤️</span><div class="t">点这里，给 小柚 发一颗爱心</div></div>
+    <div class="react"><div>😘</div><div>🤗</div><div>🌹</div><div>💭</div></div>
+    <div class="sec">最近互动</div>
+    <div class="lc"><div class="chip" style="background:rgba(255,45,85,.15)">😘</div><div><div class="tt">小柚 发来了亲亲 😘</div><div class="st">3 分钟前</div></div><div class="vv"></div></div>
+    <div class="lc"><div class="chip" style="background:rgba(94,92,230,.15)">⭐️</div><div><div class="tt">提醒：还有 1 天就是「领证纪念日」啦</div><div class="st">昨天 09:00</div></div><div class="vv"></div></div>
+    <div class="lc"><div class="chip" style="background:rgba(255,45,85,.15)">🤗</div><div><div class="tt">你发出了抱抱 🤗</div><div class="st">昨天</div></div><div class="vv"></div></div>
+  </div>
+  <div class="tabbar"><div class="tab on"><span class="i">🏠</span>首页</div><div class="tab"><span class="i">📅</span>纪念日</div><div class="tab"><span class="i">🎮</span>游戏</div><div class="tab"><span class="i">👤</span>我的</div></div>
+  </div>
+
+  <!-- 纪念日 -->
+  <div class="phone"><div class="screen">
+    <div class="bigtitle">纪念日</div>
+    <div class="hero" style="background:linear-gradient(135deg,#FFB340,var(--orange))">
+      <div class="top"><div class="ic">📍</div><div style="font-size:14px;font-weight:600">领证纪念日</div></div>
+      <div class="num">2<span style="font-size:15px;font-weight:600"> 天</span></div>
+      <div class="cap">2024-09-09 · 每年重复 · 提前1天 09:00 提醒</div>
+    </div>
+    <div class="hero" style="background:linear-gradient(135deg,#FFB340,var(--orange))">
+      <div class="top"><div class="ic">⏳</div><div style="font-size:14px;font-weight:600">去三亚旅行</div></div>
+      <div class="num">21<span style="font-size:15px;font-weight:600"> 天</span></div>
+      <div class="cap">2026-09-28</div>
+    </div>
+    <div class="hero" style="background:linear-gradient(135deg,#FFB340,var(--orange))">
+      <div class="top"><div class="ic">📍</div><div style="font-size:14px;font-weight:600">在一起</div></div>
+      <div class="num">366<span style="font-size:15px;font-weight:600"> 天</span></div>
+      <div class="cap">2025-09-07 · 每年重复</div>
+    </div>
+    <div class="note">底部 ＋ 新增 · 点击卡片编辑/删除 · 双方实时同步 · 双方都会收到提醒通知</div>
+  </div>
+  <div class="fab">＋</div>
+  <div class="tabbar"><div class="tab"><span class="i">🏠</span>首页</div><div class="tab on"><span class="i">📅</span>纪念日</div><div class="tab"><span class="i">🎮</span>游戏</div><div class="tab"><span class="i">👤</span>我的</div></div>
+  </div>
+
+  <!-- 游戏 -->
+  <div class="phone"><div class="screen">
+    <div class="bigtitle">小游戏</div>
+    <div class="hero" style="background:linear-gradient(135deg,#DA70F0,var(--purple));height:150px;display:flex;flex-direction:column;justify-content:center">
+      <div class="top" style="margin-bottom:6px"><div class="ic">🎮</div><div style="font-size:14px;font-weight:600">井字棋 · 和 TA 对弈</div></div>
+      <div style="font-size:38px">❌</div>
+      <div class="cap">实时同步，谁先连成一条线？</div>
+    </div>
+    <div class="hero" style="background:linear-gradient(135deg,#5AC8FA,var(--teal));height:150px;display:flex;flex-direction:column;justify-content:center">
+      <div class="top" style="margin-bottom:6px"><div class="ic">🫶</div><div style="font-size:14px;font-weight:600">每日一问</div></div>
+      <div style="font-size:38px">💬</div>
+      <div class="cap">每天一个问题，两个答案互换</div>
+    </div>
+    <div class="hero" style="background:linear-gradient(135deg,#FFD60A,var(--yellow));height:150px;display:flex;flex-direction:column;justify-content:center">
+      <div class="top" style="margin-bottom:6px"><div class="ic">🔥</div><div style="font-size:14px;font-weight:600">真心话大冒险</div></div>
+      <div style="font-size:38px">🎲</div>
+      <div class="cap">考验彼此的时候到了</div>
+    </div>
+  </div>
+  <div class="tabbar"><div class="tab"><span class="i">🏠</span>首页</div><div class="tab"><span class="i">📅</span>纪念日</div><div class="tab on"><span class="i">🎮</span>游戏</div><div class="tab"><span class="i">👤</span>我的</div></div>
+  </div>
+</div>
+
+<h2>桌面小组件（本次新增 · 互动直接发生在小组件上）</h2>
+<div class="wgrid">
+  <div>
+    <div class="widget wlove" style="width:340px">
+      <div style="display:flex;gap:14px;align-items:center">
+        <div style="flex:1">
+          <div class="wtitle">在一起</div>
+          <div class="wnum">366 <span style="font-size:14px">天</span></div>
+          <div style="font-size:12px;opacity:.9">● 小柚 在线</div>
+        </div>
+        <div class="wbtns"><div>❤️</div><div>😘</div><div>🤗</div></div>
+      </div>
+      <div style="font-size:11px;opacity:.75;margin-top:8px">小柚 发来 😘 · 3 分钟前</div>
+    </div>
+    <div class="note" style="padding-left:0">情侣卡 4×2：三个互动按钮<strong style="color:var(--pink)">免打开 App 直接发送</strong>，实时刷新</div>
+  </div>
+  <div>
+    <div class="widget" style="width:170px;background:#fff;border:2px solid #FFD9E2;color:#000;text-align:center;padding:18px">
+      <div style="font-size:40px">❤️</div>
+      <div style="color:var(--pink);font-weight:700;font-size:13px;margin-top:6px">点一下，想你了</div>
+      <div style="color:var(--gray);font-size:11px;margin-top:2px">今日已发 3 颗</div>
+    </div>
+    <div class="note" style="padding-left:0">一键爱心 2×2：点击即发，带今日计数反馈</div>
+  </div>
+  <div>
+    <div class="widget wann" style="width:340px">
+      <div class="wtitle">纪念日 · 距离</div>
+      <div style="font-size:17px;font-weight:700">领证纪念日</div>
+      <div class="wnum">2 <span style="font-size:13px">天</span><span style="font-size:12px;opacity:.8;margin-left:8px">2024-09-09</span></div>
+    </div>
+    <div class="note" style="padding-left:0">纪念日 4×2：自动显示最近的纪念日/倒计时，点击进 App</div>
+  </div>
+</div>
+
+<h2>应用图标（design/icon.svg · 与 App 内 adaptive icon 同源）</h2>
+<div style="display:flex;gap:16px;align-items:center;margin-top:8px">
+  <img src="../design/icon.svg" width="120" height="120" style="border-radius:27px;box-shadow:0 8px 24px rgba(0,0,0,.15)">
+  <div class="pal">
+    <div style="background:#FF2D55">Pink<br>FF2D55</div>
+    <div style="background:#FF6482">PinkLight<br>FF6482</div>
+    <div style="background:#FF9500">Orange<br>FF9500</div>
+    <div style="background:#5E5CE6">Indigo<br>5E5CE6</div>
+    <div style="background:#30B0C7">Teal<br>30B0C7</div>
+    <div style="background:#FF9F0A">Yellow<br>FF9F0A</div>
+    <div style="background:#30D158">Green<br>30D158</div>
+    <div style="background:#F2F2F7;color:#8E8E93">BG<br>F2F2F7</div>
+  </div>
+</div>
+</body>
+</html>
