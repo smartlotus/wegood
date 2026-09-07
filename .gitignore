@@ -1,0 +1,10 @@
+node_modules/
+server/data/
+server/.tmp*
+.gradle/
+build/
+app/build/
+local.properties
+*.iml
+.idea/
+.DS_Store
