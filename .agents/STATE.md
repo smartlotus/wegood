@@ -5,7 +5,7 @@
 
 ## 现在
 
-- v1.2.0（启动卡死修复 + 连接方式：互联网/蓝牙）B/C 门 PASS_WITH_LIMITATIONS，D 推送进行中。
+- 空闲。v1.2.0（启动卡死修复 + 互联网/蓝牙双连接模式）A/B/C/D 全链收口，远端 HEAD f716132 校验一致。
 - 修复要点：本地快照回灌（断网/无服务器也能进界面）、连接状态条、离线看门狗 15s 自动重试、
   服务器地址可改+测试连接、蓝牙直连 RFCOMM MVP、docs/DEPLOY.md 三条服务端部署路径。
 
@@ -16,7 +16,7 @@
 | A 服务端 | PASS | 2026-09-07_server-smoke_001 | npm test 退出码 0（v1.2.0 协议零改动复用） |
 | B Android Debug+单测 | PASS | 2026-09-08_connectivity-fix_001 | gate_report（单测 10/10） |
 | C Android Release | PASS_WITH_LIMITATIONS | 2026-09-08_connectivity-fix_001 | gate_report（v1.2.0 已验签；蓝牙双机真机项未实测） |
-| D GitHub 发布 | RUNNING | 2026-09-08_connectivity-fix_001 | 推送后回填 |
+| D GitHub 发布 | PASS | 2026-09-08_connectivity-fix_001 | ls-remote == HEAD f716132（HTTPS 抖动，SSH 通道完成） |
 
 ## 下一步
 

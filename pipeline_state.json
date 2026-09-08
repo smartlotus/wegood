@@ -43,12 +43,12 @@
     {
       "id": "D",
       "name": "发布 GitHub 仓库（含全部文件功能说明）",
-      "status": "RUNNING",
+      "status": "PASS",
       "run_id": "2026-09-08_connectivity-fix_001",
       "run_dir": null,
-      "gate_report": "推送后回填：git ls-remote origin/main == local HEAD",
-      "attempts": 0,
-      "last_error": null,
+      "gate_report": "git ls-remote == local HEAD (f716132d5422)；HTTPS 直连被重置后改走 SSH 通道推送成功；仓库 https://github.com/smartlotus/wegood",
+      "attempts": 3,
+      "last_error": "HTTPS 连接 github.com:443 失败（网络波动），SSH 通道成功",
       "depends_on": ["C"]
     }
   ]
