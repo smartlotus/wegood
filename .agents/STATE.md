@@ -1,21 +1,24 @@
 # 项目状态（唯一给人看的状态页）
 
 > 规则：只反映"现在"，一屏以内。过时内容移入 `.agents/handoffs/` 归档。
-> 最后更新：2026-09-08 01:16 by zcode-agent
+> 最后更新：2026-09-08 23:58 by zcode-agent
 
 ## 现在
 
-- 空闲。v1.1.0（动效/UI/小组件优化）B/C 门 PASS，增量发布中。
+- v1.2.0（启动卡死修复 + 连接方式：互联网/蓝牙）B/C 门 PASS_WITH_LIMITATIONS，D 推送进行中。
+- 修复要点：本地快照回灌（断网/无服务器也能进界面）、连接状态条、离线看门狗 15s 自动重试、
+  服务器地址可改+测试连接、蓝牙直连 RFCOMM MVP、docs/DEPLOY.md 三条服务端部署路径。
 
 ## 流水线全景
 
 | 环节 | 状态 | run_id | 验收票 |
 |---|---|---|---|
-| A 服务端 | PASS | 2026-09-07_server-smoke_001 | npm test 退出码 0 |
-| B Android Debug+单测 | PASS | 2026-09-08_ui-polish_001 | runs/.../gate_report.json（单测 7/7） |
-| C Android Release | PASS | 2026-09-08_ui-polish_001 | gate_report（v1.1.0 APK 已签名） |
-| D GitHub 发布 | RUNNING | 2026-09-08_publish_002 | 增量推送后回填 |
+| A 服务端 | PASS | 2026-09-07_server-smoke_001 | npm test 退出码 0（v1.2.0 协议零改动复用） |
+| B Android Debug+单测 | PASS | 2026-09-08_connectivity-fix_001 | gate_report（单测 10/10） |
+| C Android Release | PASS_WITH_LIMITATIONS | 2026-09-08_connectivity-fix_001 | gate_report（v1.2.0 已验签；蓝牙双机真机项未实测） |
+| D GitHub 发布 | RUNNING | 2026-09-08_connectivity-fix_001 | 推送后回填 |
 
 ## 下一步
 
-真机走查 v1.1.0 动效手感；可继续迭代方向：小组件 Glance 重写/更多游戏。
+用户侧：装 dist/WeGood-v1.2.0-release.apk；按 docs/DEPLOY.md 选一条服务端路径（或先用蓝牙直连）。
+可迭代：真机蓝牙走查、Glance 小组件重写、更多游戏。

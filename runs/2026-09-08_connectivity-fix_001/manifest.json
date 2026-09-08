@@ -1,0 +1,26 @@
+{
+  "run_id": "2026-09-08_connectivity-fix_001",
+  "created_at": "2026-09-08T23:55:00+08:00",
+  "created_by": "zcode-agent",
+  "stage": ["B", "C"],
+  "version": "1.2.0 (versionCode 3)",
+  "base_commit": "e6f7679c163dde27ba5b789f84954142d4dc672c",
+  "trigger": "用户真机反馈：App 卡在加载页进不去；要求解释联网方式并新增可自选的蓝牙连接",
+  "plan_doc": "docs/plans/2026-09-08-connectivity-fix.md",
+  "changes": [
+    "data/Repo.kt：修复启动卡死（本地快照 hydrateLocal() 回灌，state 不再依赖 Api.me 成功）；新增 Conn 连接状态流；15s 离线看门狗自动重试；sendHeart 按 connMode 分派（蓝牙/联网）；蓝牙消息并入 UiEvent（全屏爱心特效复用）；testServer() 探测延迟；setConnMode() 模式切换；init 幂等保护",
+    "bt/BtLink.kt（新增）：蓝牙直连 RFCOMM/SPP 链路，仅用系统已配对设备（免定位权限）；双端对等监听/连接；BtMsg(hello/heart) 换行 JSON 协议；状态流 + 收件流",
+    "ui/screens/PairScreen.kt：双页签（互联网配对/蓝牙直连）；离线横幅+点此重试替代无限转圈；蓝牙设备列表/等待连接/状态卡/权限申请",
+    "ui/screens/HomeScreen.kt：顶部连接状态条（离线/连接中/蓝牙三态，在线不显示）",
+    "ui/screens/MeScreen.kt：连接方式切换卡（互联网/蓝牙）；服务器地址弹窗加测试连接（显示延迟）；版本号改用 BuildConfig（修复硬编码 v1.0.0）",
+    "data/Api.kt：ping() 3s 短超时探测；data/Prefs.kt：connMode/isBtMode",
+    "MainActivity.kt：加载页文案改『正在打开』（不再声称连接中）",
+    "AndroidManifest.xml：BLUETOOTH_CONNECT(31+) / BLUETOOTH / BLUETOOTH_ADMIN(≤30)",
+    "app/build.gradle.kts：1.2.0 / versionCode 3 / buildConfig",
+    "docs/DEPLOY.md（新增）：服务端三条部署路径 + 蓝牙操作步骤；docs/plans/ 修复计划；README/STRUCTURE 同步"
+  ],
+  "artifacts": [
+    "dist/WeGood-v1.2.0-release.apk",
+    "dist/WeGood-v1.2.0-debug.apk"
+  ]
+}

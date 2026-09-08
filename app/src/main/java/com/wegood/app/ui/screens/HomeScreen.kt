@@ -31,6 +31,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,13 +42,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.wegood.app.bt.BtLink
+import com.wegood.app.data.Conn
 import com.wegood.app.data.DateMath
 import com.wegood.app.data.FeedEvent
 import com.wegood.app.data.HEART_EMOJI
+import com.wegood.app.data.Prefs
 import com.wegood.app.data.Repo
 import com.wegood.app.ui.components.LargeTitle
 import com.wegood.app.ui.components.ListCard
@@ -96,6 +101,8 @@ fun HomeScreen(state: com.wegood.app.data.MeResponse) {
                 modifier = Modifier.padding(start = 20.dp, bottom = 4.dp),
             )
         }
+
+        item { ConnChip() }
 
         // 在一起英雄卡（天数滚动动画）
         item {
@@ -185,6 +192,33 @@ fun HomeScreen(state: com.wegood.app.data.MeResponse) {
             }
         }
         item { Spacer(Modifier.height(20.dp)) }
+    }
+}
+
+/** 顶部连接状态条：联网在线时不显示（保持界面干净），其余状态可见可感知 */
+@Composable
+private fun ConnChip() {
+    val conn by Repo.conn.collectAsState()
+    val link by BtLink.state.collectAsState()
+    val info: Pair<String, Color> = when {
+        Prefs.isBtMode -> when (val s = link) {
+            is BtLink.State.Connected -> "🔵 蓝牙直连 · ${s.peerName}" to Color(0xFF30B0C7)
+            BtLink.State.Waiting -> "🔵 蓝牙等待 TA 连接…" to Color(0xFFFF9500)
+            else -> "🔵 蓝牙未连接 · 去配对页连接" to Color(0xFFFF9500)
+        }
+        conn == Conn.CONNECTING -> "⏳ 连接服务器中…" to Color(0xFFFF9500)
+        conn == Conn.OFFLINE -> "🔌 离线 · 显示本地数据，自动重试中" to Color(0xFFFF3B30)
+        else -> return
+    }
+    Row(
+        Modifier
+            .padding(start = 20.dp, bottom = 2.dp)
+            .clip(RoundedCornerShape(50))
+            .background(info.second.copy(alpha = 0.12f))
+            .padding(horizontal = 10.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(info.first, fontSize = 12.sp, color = info.second, fontWeight = FontWeight(600))
     }
 }
 

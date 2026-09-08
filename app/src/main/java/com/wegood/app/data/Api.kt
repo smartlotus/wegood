@@ -28,6 +28,12 @@ object Api {
         .readTimeout(15, TimeUnit.SECONDS)
         .build()
 
+    // 探测专用：短超时，只判断"服务器通不通"
+    private val probeClient: OkHttpClient = OkHttpClient.Builder()
+        .connectTimeout(3, TimeUnit.SECONDS)
+        .readTimeout(3, TimeUnit.SECONDS)
+        .build()
+
     private fun request(method: String, path: String, bodyJson: String? = null): Request {
         val b = Request.Builder().url(Prefs.serverUrl + path)
             .header("x-device-id", Prefs.deviceId)
@@ -58,6 +64,11 @@ object Api {
     private inline fun <reified T> decode(text: String): T = json.decodeFromString(text)
 
     suspend fun register(name: String): RegisterResponse = decode(call("POST", "/api/register", json.encodeToString(NameReq(name))))
+
+    /** 探测服务器可达性：任意 HTTP 响应（含 401/404）都算通，网络异常才算失败 */
+    suspend fun ping(url: String) = withContext(Dispatchers.IO) {
+        probeClient.newCall(Request.Builder().url(url.trimEnd('/') + "/api/me").build()).execute().use { }
+    }
     suspend fun me(): MeResponse = decode(call("GET", "/api/me"))
     suspend fun updateName(name: String): OkResponse = decode(call("POST", "/api/me", json.encodeToString(NameReq(name))))
     suspend fun pair(code: String): OkResponse = decode(call("POST", "/api/pair", json.encodeToString(PairReq(code))))

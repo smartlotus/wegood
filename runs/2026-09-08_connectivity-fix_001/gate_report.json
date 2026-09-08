@@ -1,0 +1,15 @@
+{
+  "run_id": "2026-09-08_connectivity-fix_001",
+  "checked_at": "2026-09-08T23:58:00+08:00",
+  "verdict": "PASS_WITH_LIMITATIONS",
+  "checks": [
+    { "name": "B: 单元测试", "result": "PASS", "evidence": "testDebugUnitTest：BtMsgTest 3/3 + DateMathTest 7/7，failures=0 errors=0" },
+    { "name": "B: assembleDebug", "result": "PASS", "evidence": "BUILD SUCCESSFUL（第1轮缺 collectAsState import 已修，共 2 attempts）" },
+    { "name": "C: assembleRelease", "result": "PASS", "evidence": "BUILD SUCCESSFUL in 31s" },
+    { "name": "C: apksigner verify", "result": "PASS", "evidence": "SHA-256 220bb1cf…3eff9，APK 可直接安装" },
+    { "name": "启动路径修复复核", "result": "PASS", "evidence": "hydrateLocal() 在 init 同步执行 → state 不为 null；AppRoot 的 LoadingScreen 分支不可达；断网时 ensureRegistered 失败仅置 OFFLINE+Toast，不阻塞 UI；配对码区改为『离线中+点此重试』" },
+    { "name": "蓝牙双机端到端（真机）", "result": "LIMITATION", "evidence": "本机无双真机环境，仅协议单测+代码审查；操作步骤已写入 docs/DEPLOY.md，风险：同时互连的极端时序未实测" },
+    { "name": "云端部署端到端", "result": "LIMITATION", "evidence": "服务端代码零改动（方案①③已验证过协议），Render 托管步骤待用户实操" }
+  ],
+  "notes": "默认仍为联网模式，老用户升级无感；回滚 = revert 本轮 commit。"
+}

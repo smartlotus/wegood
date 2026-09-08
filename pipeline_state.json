@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "wegood",
-  "updated_at": "2026-09-08T01:16:00+08:00",
+  "updated_at": "2026-09-08T23:58:00+08:00",
   "updated_by": "zcode-agent",
   "paused": false,
   "active_owner": "zcode-agent",
@@ -13,7 +13,7 @@
       "status": "PASS",
       "run_id": "2026-09-07_server-smoke_001",
       "run_dir": "server/test",
-      "gate_report": "内联（npm test 退出码 0：注册/配对/SSE/爱心/纪念日/井字棋/每日一问/解绑全绿）",
+      "gate_report": "内联（npm test 退出码 0：注册/配对/SSE/爱心/纪念日/井字棋/每日一问/解绑全绿）；v1.2.0 协议零改动，直接复用",
       "attempts": 2,
       "last_error": null,
       "depends_on": []
@@ -22,20 +22,20 @@
       "id": "B",
       "name": "Android Debug 构建 + 单元测试",
       "status": "PASS",
-      "run_id": "2026-09-08_ui-polish_001",
-      "run_dir": "runs/2026-09-08_ui-polish_001",
-      "gate_report": "runs/2026-09-08_ui-polish_001/gate_report.json",
-      "attempts": 3,
-      "last_error": "v1.1.0 第1轮缺 spring/animateFloat import（已修）；第2轮 PASS",
+      "run_id": "2026-09-08_connectivity-fix_001",
+      "run_dir": "runs/2026-09-08_connectivity-fix_001",
+      "gate_report": "runs/2026-09-08_connectivity-fix_001/gate_report.json（单测 10/10：BtMsg 3 + DateMath 7）",
+      "attempts": 2,
+      "last_error": "v1.2.0 第1轮缺 collectAsState import（已修）；第2轮 PASS",
       "depends_on": ["A"]
     },
     {
       "id": "C",
       "name": "Android Release 打包（debug 密钥签名，可直接安装）",
       "status": "PASS",
-      "run_id": "2026-09-08_ui-polish_001",
-      "run_dir": "runs/2026-09-08_ui-polish_001",
-      "gate_report": "runs/2026-09-08_ui-polish_001/gate_report.json",
+      "run_id": "2026-09-08_connectivity-fix_001",
+      "run_dir": "runs/2026-09-08_connectivity-fix_001",
+      "gate_report": "gate_report（v1.2.0 APK 已验签；PASS_WITH_LIMITATIONS：蓝牙双机真机项未实测）",
       "attempts": 1,
       "last_error": null,
       "depends_on": ["B"]
@@ -43,11 +43,11 @@
     {
       "id": "D",
       "name": "发布 GitHub 仓库（含全部文件功能说明）",
-      "status": "PASS",
-      "run_id": "2026-09-08_publish_002",
+      "status": "RUNNING",
+      "run_id": "2026-09-08_connectivity-fix_001",
       "run_dir": null,
-      "gate_report": "git ls-remote origin/main == local HEAD (372b645)，仓库 https://github.com/smartlotus/wegood",
-      "attempts": 2,
+      "gate_report": "推送后回填：git ls-remote origin/main == local HEAD",
+      "attempts": 0,
       "last_error": null,
       "depends_on": ["C"]
     }

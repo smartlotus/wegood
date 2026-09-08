@@ -1,12 +1,16 @@
 package com.wegood.app.ui.screens
 
+import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,6 +29,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
@@ -32,6 +37,7 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,6 +53,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
+import com.wegood.app.BuildConfig
+import com.wegood.app.bt.BtLink
 import com.wegood.app.data.DateMath
 import com.wegood.app.data.Prefs
 import com.wegood.app.data.Repo
@@ -70,6 +79,14 @@ fun MeScreen(state: com.wegood.app.data.MeResponse) {
     var showServerEdit by remember { mutableStateOf(false) }
     var showUnbind by remember { mutableStateOf(false) }
     var realtime by remember { mutableStateOf(Prefs.realtimeEnabled) }
+    var btMode by remember { mutableStateOf(Prefs.isBtMode) }
+    val btLinkState by BtLink.state.collectAsState()
+    val btPermLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        if (granted) {
+            btMode = true
+            Repo.setConnMode(true)
+        }
+    }
     val notifEnabled = remember { NotificationManagerCompat.from(context).areNotificationsEnabled() }
     val exactAlarmOk = remember {
         Build.VERSION.SDK_INT < 31 || (context.getSystemService(Context.ALARM_SERVICE) as android.app.AlarmManager).canScheduleExactAlarms()
@@ -200,6 +217,49 @@ fun MeScreen(state: com.wegood.app.data.MeResponse) {
                     colors = SwitchDefaults.colors(checkedTrackColor = Pink),
                 )
             }
+            // 连接方式：互联网 / 蓝牙（用户自选）
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(Color.White)
+                    .padding(horizontal = 14.dp, vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(Modifier.weight(1f)) {
+                    Text("连接方式", fontSize = 16.sp, fontWeight = FontWeight(600))
+                    Text(
+                        if (btMode) {
+                            when (val s = btLinkState) {
+                                is BtLink.State.Connected -> "蓝牙直连中 · ${s.peerName}（近距离免服务器）"
+                                else -> "蓝牙直连：近距离免服务器，支持发爱心"
+                            }
+                        } else {
+                            "互联网：远距离全功能（需可用的服务端）"
+                        },
+                        fontSize = 13.sp, color = TextGray,
+                    )
+                    Row(Modifier.padding(top = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        ModeChip("🌐 互联网", !btMode) {
+                            if (btMode) {
+                                btMode = false
+                                Repo.setConnMode(false)
+                            }
+                        }
+                        ModeChip("🔵 蓝牙", btMode) {
+                            val granted = Build.VERSION.SDK_INT < 31 || ContextCompat.checkSelfPermission(
+                                context, Manifest.permission.BLUETOOTH_CONNECT,
+                            ) == PackageManager.PERMISSION_GRANTED
+                            if (!granted) {
+                                btPermLauncher.launch(Manifest.permission.BLUETOOTH_CONNECT)
+                            } else if (!btMode) {
+                                btMode = true
+                                Repo.setConnMode(true)
+                            }
+                        }
+                    }
+                }
+            }
             ListCard(
                 icon = "🖥️",
                 iconColor = Color(0x155E5CE6),
@@ -227,7 +287,7 @@ fun MeScreen(state: com.wegood.app.data.MeResponse) {
                 onClick = { showUnbind = true },
             )
             Text(
-                "WeGood v1.0.0 · 为你们而做 ❤️",
+                "WeGood v${BuildConfig.VERSION_NAME} · 为你们而做 ❤️",
                 fontSize = 12.sp, color = TextGray,
                 modifier = Modifier.fillMaxWidth().padding(vertical = 18.dp),
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center,
@@ -255,13 +315,52 @@ fun MeScreen(state: com.wegood.app.data.MeResponse) {
     }
     if (showServerEdit) {
         var server by rememberSaveable { mutableStateOf(Prefs.serverUrl) }
+        var testing by remember { mutableStateOf(false) }
+        var testResult by remember { mutableStateOf<String?>(null) }
         AlertDialog(
             onDismissRequest = { showServerEdit = false },
             title = { Text("服务器地址") },
             text = {
                 Column {
-                    OutlinedTextField(value = server, onValueChange = { server = it }, singleLine = true)
-                    Text("改成你们部署的 WeGood 服务端地址，如 http://1.2.3.4:3000", fontSize = 12.sp, color = TextGray, modifier = Modifier.padding(top = 8.dp))
+                    OutlinedTextField(value = server, onValueChange = { server = it; testResult = null }, singleLine = true)
+                    Text(
+                        "同一 WiFi：电脑运行 node server，手机填 http://电脑IP:3000\n异地使用请部署服务端（见项目 docs/DEPLOY.md）",
+                        fontSize = 12.sp, color = TextGray, modifier = Modifier.padding(top = 8.dp),
+                    )
+                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 8.dp)) {
+                        Text(
+                            "测试连接",
+                            color = Pink, fontWeight = FontWeight(600), fontSize = 14.sp,
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(50))
+                                .background(Pink.copy(alpha = 0.1f))
+                                .padding(horizontal = 18.dp, vertical = 8.dp)
+                                .clickableNoIndication {
+                                    if (!testing) {
+                                        testing = true; testResult = null
+                                        scope.launch {
+                                            val r = Repo.testServer(server)
+                                            testing = false
+                                            testResult = r.fold(
+                                                onSuccess = { "✅ 服务器可达 · ${it}ms" },
+                                                onFailure = { "❌ 连不上，请检查地址与网络" },
+                                            )
+                                        }
+                                    }
+                                },
+                        )
+                        if (testing) {
+                            CircularProgressIndicator(Modifier.padding(start = 10.dp).size(16.dp), color = Pink, strokeWidth = 2.dp)
+                        }
+                    }
+                    testResult?.let {
+                        Text(
+                            it,
+                            fontSize = 13.sp, fontWeight = FontWeight(600),
+                            color = if (it.startsWith("✅")) Color(0xFF30D158) else Color(0xFFFF3B30),
+                            modifier = Modifier.padding(top = 8.dp),
+                        )
+                    }
                 }
             },
             confirmButton = {
@@ -288,4 +387,19 @@ fun MeScreen(state: com.wegood.app.data.MeResponse) {
             dismissButton = { TextButton(onClick = { showUnbind = false }) { Text("再想想") } },
         )
     }
+}
+
+/** 连接方式分段选择的小胶囊 */
+@Composable
+private fun ModeChip(label: String, selected: Boolean, onClick: () -> Unit) {
+    Text(
+        label,
+        fontSize = 13.sp, fontWeight = FontWeight(700),
+        color = if (selected) Color.White else Pink,
+        modifier = Modifier
+            .clip(RoundedCornerShape(50))
+            .background(if (selected) Pink else Pink.copy(alpha = 0.1f))
+            .clickableNoIndication(onClick)
+            .padding(horizontal = 14.dp, vertical = 6.dp),
+    )
 }

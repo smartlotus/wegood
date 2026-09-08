@@ -58,6 +58,11 @@ object Prefs {
     var realtimeEnabled: Boolean get() = sp.getBoolean("realtime", true)
         set(v) = sp.edit().putBoolean("realtime", v).apply()
 
+    /** 连接方式：net=互联网服务器（远距离全功能）/ bt=蓝牙直连（近距离免服务器） */
+    var connMode: String get() = sp.getString("connMode", "net") ?: "net"
+        set(v) = sp.edit().putString("connMode", v).apply()
+    val isBtMode: Boolean get() = connMode == "bt"
+
     val paired: Boolean get() = coupleCreatedAt > 0 && partnerName.isNotEmpty()
 
     /** 解绑：清除配对数据但保留设备凭证与服务器设置 */

@@ -225,7 +225,7 @@ private fun LoadingScreen() {
         verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center,
     ) {
         Text("💗", fontSize = 56.sp, modifier = Modifier.scale(beat))
-        Text("正在连接你们的心动…", color = Color(0xFF8E8E93), fontSize = 14.sp, modifier = Modifier.padding(top = 14.dp))
+        Text("正在打开 WeGood…", color = Color(0xFF8E8E93), fontSize = 14.sp, modifier = Modifier.padding(top = 14.dp))
     }
 }
 
